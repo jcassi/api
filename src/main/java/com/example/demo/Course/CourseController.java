@@ -2,6 +2,7 @@ package com.example.demo.Course;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
+import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 import org.springframework.web.server.ResponseStatusException;
 
@@ -15,12 +16,12 @@ public class CourseController {
     private CourseService courseService;
 
     @GetMapping
-    public List<Course> getDepartments() {
+    public List<Course> getCourses() {
         return courseService.getAllCourses();
     }
 
     @GetMapping(path = "/{id}")
-    public Course getDepartmentById(@PathVariable int id) {
+    public Course getCourseId(@PathVariable String id) {
         Course course;
         try {
             course = courseService.getCourseById(id);
@@ -38,5 +39,16 @@ public class CourseController {
         } catch (CourseAlreadyExistsException e) {
             throw new ResponseStatusException(HttpStatus.CONFLICT, "Course already exists", e);
         }
+    }
+
+    @PutMapping("/{id}")
+    public ResponseEntity<Course> updateCourse(@PathVariable String id,
+                                               @RequestBody Course course) {
+        return courseService.updateCourse(id, course);
+    }
+
+    @DeleteMapping("/{id}")
+    public void deleteCourse(@PathVariable String id){
+        courseService.deleteCourse(id);
     }
 }

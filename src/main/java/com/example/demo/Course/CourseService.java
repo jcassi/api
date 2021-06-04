@@ -1,6 +1,8 @@
 package com.example.demo.Course;
 
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.http.HttpStatus;
+import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Service;
 
 import java.util.ArrayList;
@@ -14,28 +16,38 @@ public class CourseService {
     private CourseRepository courseRepository;
 
     public List<Course> getAllCourses() {
-        Iterable<Course> iterable =  courseRepository.findAll();
         List<Course> result = new ArrayList<>();
+        Iterable<Course> iterable =  courseRepository.findAll();
         iterable.forEach(result::add);
         return result;
     }
 
-    public Course getCourseById(int id) {
+    public Course getCourseById(String id) {
         Optional<Course> course = courseRepository.findById(id);
         if (course.isPresent()) {
             return course.get();
         } else {
-            throw new CourseAlreadyExistsException();
+            throw new CourseNotFoundException();
         }
     }
 
     public void addCourse(Course course) {
-        try {
-            getCourseById(course.getCode());
-        } catch (CourseNotFoundException e) {
+        if (courseRepository.existsById(course.getCode())) {
+            throw new CourseAlreadyExistsException();
+        } else {
             courseRepository.save(course);
-            return;
         }
-        throw new CourseAlreadyExistsException();
+    }
+
+    public ResponseEntity<Course> updateCourse(String id, Course course) {
+        if (courseRepository.existsById(id)) {
+            return new ResponseEntity<>(courseRepository.save(course), HttpStatus.OK);
+        } else {
+            return new ResponseEntity<>(courseRepository.save(course), HttpStatus.CREATED);
+        }
+    }
+
+    public void deleteCourse(String id) {
+        courseRepository.deleteById(id);
     }
 }

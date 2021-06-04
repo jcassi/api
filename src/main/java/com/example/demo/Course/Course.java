@@ -6,10 +6,10 @@ import javax.persistence.ManyToMany;
 import javax.persistence.Table;
 
 @Entity
-@Table
+@Table (name = "course")
 public class Course {
     @Id
-    int code;
+    String code;
     String name;
     int maxEnrollment;
 
@@ -20,18 +20,18 @@ public class Course {
 
     }
 
-    public Course(int code, String name, int maxCapacity) {
+    public Course(String code, String name, int maxCapacity) {
         this.code = code;
         this.name = name;
         this.maxEnrollment = maxCapacity;
     }
 
 
-    public int getCode() {
+    public String getCode() {
         return code;
     }
 
-    public void setCode(int code) {
+    public void setCode(String code) {
         this.code = code;
     }
 
