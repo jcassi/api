@@ -6,17 +6,17 @@ import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 import org.springframework.web.server.ResponseStatusException;
 
-import java.util.List;
+import java.util.Set;
 
 @RestController
-@RequestMapping("/course")
+@RequestMapping("/courses")
 public class CourseController {
 
     @Autowired
     private CourseService courseService;
 
     @GetMapping
-    public List<Course> getCourses() {
+    public Set<Course> getCourses() {
         return courseService.getAllCourses();
     }
 

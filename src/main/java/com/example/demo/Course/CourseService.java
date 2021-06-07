@@ -5,9 +5,9 @@ import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Service;
 
-import java.util.ArrayList;
-import java.util.List;
+import java.util.HashSet;
 import java.util.Optional;
+import java.util.Set;
 
 @Service
 public class CourseService {
@@ -15,8 +15,8 @@ public class CourseService {
     @Autowired
     private CourseRepository courseRepository;
 
-    public List<Course> getAllCourses() {
-        List<Course> result = new ArrayList<>();
+    public Set<Course> getAllCourses() {
+        Set<Course> result = new HashSet<>();
         Iterable<Course> iterable =  courseRepository.findAll();
         iterable.forEach(result::add);
         return result;

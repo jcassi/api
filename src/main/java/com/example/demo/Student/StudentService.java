@@ -9,8 +9,8 @@ import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Service;
 
-import java.util.ArrayList;
-import java.util.List;
+import java.util.HashSet;
+import java.util.Set;
 import java.util.Optional;
 
 @Service
@@ -19,8 +19,8 @@ public class StudentService {
     @Autowired
     private StudentRepository studentRepository;
 
-    public List<Student> getAllStudents() {
-        List<Student> result = new ArrayList<>();
+    public Set<Student> getAllStudents() {
+        Set<Student> result = new HashSet<>();
         Iterable<Student> iterable =  studentRepository.findAll();
         iterable.forEach(result::add);
         return result;

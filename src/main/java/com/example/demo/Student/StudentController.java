@@ -10,17 +10,17 @@ import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 import org.springframework.web.server.ResponseStatusException;
 
-import java.util.List;
+import java.util.Set;
 
 @RestController
-@RequestMapping("/student")
+@RequestMapping("/students")
 public class StudentController {
 
     @Autowired
     private StudentService studentService;
 
     @GetMapping
-    public List<Student> getStudents() {
+    public Set<Student> getStudents() {
         return studentService.getAllStudents();
     }
 

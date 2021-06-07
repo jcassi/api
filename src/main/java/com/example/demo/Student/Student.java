@@ -1,22 +1,37 @@
 package com.example.demo.Student;
 
+import com.example.demo.Course.Course;
+import com.fasterxml.jackson.annotation.JsonIdentityInfo;
+import com.fasterxml.jackson.annotation.ObjectIdGenerators;
+
 import javax.persistence.*;
+import java.util.Set;
 
 @Entity
 @Table(name = "student")
+@JsonIdentityInfo(
+        generator = ObjectIdGenerators.PropertyGenerator.class,
+        property = "id")
 public class Student {
 
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
-    Long id;
+    private Long id;
 
     @Column(name = "first_name")
-    String firstName;
+    private String firstName;
 
     @Column(name = "last_name")
-    String lastName;
+    private String lastName;
 
-    String email;
+    private String email;
+
+    @ManyToMany(mappedBy = "students", cascade = CascadeType.ALL)
+    private Set<Course> courses;
+
+    public Student() {
+
+    }
 
     public Student(Long id, String firstName, String lastName, String email) {
         this.id = id;
@@ -25,15 +40,14 @@ public class Student {
         this.email = email;
     }
 
-    public Student(String firstName, String lastName, String email) {
+    public Student(Long id, String firstName, String lastName, String email, Set<Course> courses) {
+        this.id = id;
         this.firstName = firstName;
         this.lastName = lastName;
         this.email = email;
+        this.courses = courses;
     }
 
-    public Student() {
-
-    }
 
     public Long getId() {
         return id;
@@ -65,5 +79,13 @@ public class Student {
 
     public void setEmail(String email) {
         this.email = email;
+    }
+
+    public Set<Course> getCourses() {
+        return courses;
+    }
+
+    public void setCourses(Set<Course> courses) {
+        this.courses = courses;
     }
 }
