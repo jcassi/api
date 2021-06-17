@@ -23,7 +23,7 @@ public class Student {
     private String email;
 
     @JsonBackReference
-    @ManyToMany(mappedBy = "students", cascade = CascadeType.ALL, fetch = FetchType.LAZY)
+    @ManyToMany(mappedBy = "students", cascade = CascadeType.PERSIST, fetch = FetchType.LAZY)
     private Set<Course> courses;
 
     public Student() {
