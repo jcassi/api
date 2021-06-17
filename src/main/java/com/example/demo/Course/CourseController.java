@@ -1,5 +1,6 @@
 package com.example.demo.Course;
 
+import com.example.demo.Student.StudentNotFoundException;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
@@ -50,5 +51,16 @@ public class CourseController {
     @DeleteMapping("/{id}")
     public void deleteCourse(@PathVariable String id){
         courseService.deleteCourse(id);
+    }
+
+    @PutMapping("/{courseId}/students/{studentId}")
+    public void addStudentToCourse(@PathVariable String courseId, @PathVariable Long studentId) {
+        try {
+            courseService.addStudentToCourse(courseId, studentId);
+        } catch (CourseNotFoundException e) {
+            throw new ResponseStatusException(HttpStatus.NOT_FOUND, "Course not found", e);
+        } catch (StudentNotFoundException e) {
+            throw new ResponseStatusException(HttpStatus.NOT_FOUND, "Student not found", e);
+        }
     }
 }

@@ -1,17 +1,13 @@
 package com.example.demo.Student;
 
 import com.example.demo.Course.Course;
-import com.fasterxml.jackson.annotation.JsonIdentityInfo;
-import com.fasterxml.jackson.annotation.ObjectIdGenerators;
+import com.fasterxml.jackson.annotation.*;
 
 import javax.persistence.*;
 import java.util.Set;
 
 @Entity
 @Table(name = "student")
-@JsonIdentityInfo(
-        generator = ObjectIdGenerators.PropertyGenerator.class,
-        property = "id")
 public class Student {
 
     @Id
@@ -26,7 +22,8 @@ public class Student {
 
     private String email;
 
-    @ManyToMany(mappedBy = "students", cascade = CascadeType.ALL)
+    @JsonBackReference
+    @ManyToMany(mappedBy = "students", cascade = CascadeType.ALL, fetch = FetchType.LAZY)
     private Set<Course> courses;
 
     public Student() {
@@ -39,15 +36,6 @@ public class Student {
         this.lastName = lastName;
         this.email = email;
     }
-
-    public Student(Long id, String firstName, String lastName, String email, Set<Course> courses) {
-        this.id = id;
-        this.firstName = firstName;
-        this.lastName = lastName;
-        this.email = email;
-        this.courses = courses;
-    }
-
 
     public Long getId() {
         return id;

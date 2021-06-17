@@ -1,5 +1,8 @@
 package com.example.demo.Course;
 
+import com.example.demo.Student.Student;
+import com.example.demo.Student.StudentRepository;
+import com.example.demo.Student.StudentService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
@@ -14,6 +17,9 @@ public class CourseService {
 
     @Autowired
     private CourseRepository courseRepository;
+
+    @Autowired
+    private StudentService studentService;
 
     public Set<Course> getAllCourses() {
         Set<Course> result = new HashSet<>();
@@ -49,5 +55,16 @@ public class CourseService {
 
     public void deleteCourse(String id) {
         courseRepository.deleteById(id);
+    }
+
+    public void addStudentToCourse(String courseId, Long studentId) {
+        try {
+            Course course = this.getCourseById(courseId);
+            Student student = this.studentService.getStudentById(studentId);
+            course.addStudent(student);
+            updateCourse(courseId, course);
+        } catch (RuntimeException e) {
+            throw e;
+        }
     }
 }

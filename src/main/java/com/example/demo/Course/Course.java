@@ -1,24 +1,20 @@
 package com.example.demo.Course;
 
 import com.example.demo.Student.Student;
-import com.fasterxml.jackson.annotation.JsonIdentityInfo;
-import com.fasterxml.jackson.annotation.ObjectIdGenerators;
+import com.fasterxml.jackson.annotation.*;
 
 import javax.persistence.*;
 import java.util.Set;
 
 @Entity
 @Table (name = "course")
-@JsonIdentityInfo(
-        generator = ObjectIdGenerators.PropertyGenerator.class,
-        property = "code")
 public class Course {
     @Id
     private String code;
     private String name;
     private int maxEnrollment;
 
-    @ManyToMany(cascade = CascadeType.ALL)
+    @ManyToMany(cascade = CascadeType.ALL, fetch = FetchType.LAZY)
     @JoinTable(name="course_student",
         joinColumns = @JoinColumn(name = "course_id"),
         inverseJoinColumns = @JoinColumn(name = "student_id"))
@@ -32,13 +28,6 @@ public class Course {
         this.code = code;
         this.name = name;
         this.maxEnrollment = maxEnrollment;
-    }
-
-    public Course(String code, String name, int maxEnrollment, Set<Student> students) {
-        this.code = code;
-        this.name = name;
-        this.maxEnrollment = maxEnrollment;
-        this.students = students;
     }
 
     public String getCode() {
@@ -71,5 +60,9 @@ public class Course {
 
     public void setStudents(Set<Student> students) {
         this.students = students;
+    }
+
+    public void addStudent(Student student) {
+        this.students.add(student);
     }
 }
