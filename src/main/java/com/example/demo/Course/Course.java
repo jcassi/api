@@ -63,6 +63,9 @@ public class Course {
     }
 
     public void addStudent(Student student) {
+        if (this.students.size() >= this.maxEnrollment) {
+            throw new CourseAlreadyFullException ();
+        }
         this.students.add(student);
     }
 }

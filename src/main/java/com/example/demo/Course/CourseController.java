@@ -61,6 +61,8 @@ public class CourseController {
             throw new ResponseStatusException(HttpStatus.NOT_FOUND, "Course not found", e);
         } catch (StudentNotFoundException e) {
             throw new ResponseStatusException(HttpStatus.NOT_FOUND, "Student not found", e);
+        } catch (CourseAlreadyFullException e) {
+            throw new ResponseStatusException(HttpStatus.CONFLICT, "Course is already full", e);
         }
     }
 }
