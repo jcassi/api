@@ -1,5 +1,6 @@
 package com.example.demo.Course;
 
+import com.example.demo.Department.Department;
 import com.example.demo.Student.Student;
 import com.fasterxml.jackson.annotation.*;
 
@@ -10,7 +11,7 @@ import java.util.Set;
 @Table (name = "course")
 public class Course {
     @Id
-    private String code;
+    private String id;
     private String name;
     private int maxEnrollment;
 
@@ -20,22 +21,25 @@ public class Course {
         inverseJoinColumns = @JoinColumn(name = "student_id"))
     private Set<Student> students;
 
+    @ManyToOne
+    private Department department;
+
     public Course() {
 
     }
 
-    public Course(String code, String name, int maxEnrollment) {
-        this.code = code;
+    public Course(String id, String name, int maxEnrollment) {
+        this.id = id;
         this.name = name;
         this.maxEnrollment = maxEnrollment;
     }
 
-    public String getCode() {
-        return code;
+    public String getId() {
+        return id;
     }
 
-    public void setCode(String code) {
-        this.code = code;
+    public void setId(String id) {
+        this.id = id;
     }
 
     public String getName() {

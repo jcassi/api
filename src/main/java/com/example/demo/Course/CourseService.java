@@ -9,6 +9,7 @@ import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Service;
 
 import java.util.HashSet;
+import java.util.List;
 import java.util.Optional;
 import java.util.Set;
 
@@ -38,7 +39,7 @@ public class CourseService {
     }
 
     public void addCourse(Course course) {
-        if (courseRepository.existsById(course.getCode())) {
+        if (courseRepository.existsById(course.getId())) {
             throw new CourseAlreadyExistsException();
         } else {
             courseRepository.save(course);
@@ -67,4 +68,5 @@ public class CourseService {
             throw e;
         }
     }
+
 }

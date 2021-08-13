@@ -1,5 +1,6 @@
 package com.example.demo.Course;
 
+import com.example.demo.Student.Student;
 import com.example.demo.Student.StudentNotFoundException;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
@@ -7,6 +8,7 @@ import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 import org.springframework.web.server.ResponseStatusException;
 
+import java.util.List;
 import java.util.Set;
 
 @RestController
@@ -65,4 +67,5 @@ public class CourseController {
             throw new ResponseStatusException(HttpStatus.CONFLICT, "Course is already full", e);
         }
     }
+
 }
