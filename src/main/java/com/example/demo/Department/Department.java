@@ -27,17 +27,16 @@ public class Department {
     public Department() {
     }
 
-    public Department(String id, String name, Set<Course> courses) {
+    public Department(String id, String name) {
         this.id = id;
-        this.name = name;
-        this.courses = courses;
+        this.name = name;;
     }
 
-    public String getCode() {
+    public String getId() {
         return id;
     }
 
-    public void setCode(String id) {
+    public void setId(String id) {
         this.id = id;
     }
 

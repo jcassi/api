@@ -42,7 +42,7 @@ public class DepartmentService {
     }
 
     public void addDepartment(Department department) {
-        if (departmentRepository.existsById(department.getCode())) {
+        if (departmentRepository.existsById(department.getId())) {
             throw new DepartmentAlreadyExistsException();
         } else {
             departmentRepository.save(department);
@@ -63,6 +63,7 @@ public class DepartmentService {
 
     public void addCourseToDepartment(String departmentId, Course course) {
         try {
+            courseRepository.save(course);
             Department department = this.getDepartmentById(departmentId);
             department.addCourse(course);
             updateDepartment(departmentId, department);

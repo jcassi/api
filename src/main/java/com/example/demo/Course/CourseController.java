@@ -36,7 +36,7 @@ public class CourseController {
 
 
     @PostMapping
-    public void addCourse(@RequestBody Course course) {
+    public void addCourse(@RequestBody Course course,  @RequestParam String departmentId) {
         try {
             courseService.addCourse(course);
         } catch (CourseAlreadyExistsException e) {

@@ -2,6 +2,7 @@ package com.example.demo.Department;
 
 
 import com.example.demo.Course.Course;
+import com.example.demo.Course.CourseService;
 import com.example.demo.Department.DepartmentRepository;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
@@ -12,10 +13,14 @@ import org.springframework.web.server.ResponseStatusException;
 import java.util.Set;
 
 @RestController
+@RequestMapping("/departments")
 public class DepartmentController {
 
     @Autowired
     private DepartmentService departmentService;
+
+    @Autowired
+    private CourseService courseService;
 
     @GetMapping
     public Set<Department> getDepartments() {
@@ -53,7 +58,7 @@ public class DepartmentController {
         departmentService.deleteDepartment(id);
     }
 
-    @PutMapping("/{departmentId}")
+    @PutMapping("/{departmentId}/courses")
     public void addCourseToDepartment(@PathVariable String departmentId, @RequestBody Course course) {
         try {
             departmentService.addCourseToDepartment(departmentId, course);
