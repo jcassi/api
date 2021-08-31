@@ -2,10 +2,12 @@ package com.example.demo.Department;
 
 import com.example.demo.Course.Course;
 import com.example.demo.Course.CourseRepository;
+import com.example.demo.Course.CourseService;
 import com.example.demo.Department.Department;
 import com.example.demo.Department.DepartmentAlreadyExistsException;
 import com.example.demo.Department.DepartmentNotFoundException;
 import com.example.demo.Department.DepartmentRepository;
+import com.example.demo.Student.Student;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
@@ -22,7 +24,7 @@ public class DepartmentService {
     private DepartmentRepository departmentRepository;
 
     @Autowired
-    private CourseRepository courseRepository;
+    private CourseService courseService;
 
 
     public Set<Department> getAllDepartments() {
@@ -63,12 +65,19 @@ public class DepartmentService {
 
     public void addCourseToDepartment(String departmentId, Course course) {
         try {
-            courseRepository.save(course);
+            courseService.addCourse(course);
             Department department = this.getDepartmentById(departmentId);
             department.addCourse(course);
             updateDepartment(departmentId, department);
+            System.out.println(department.getCourses());
         } catch (RuntimeException e) {
             throw e;
         }
+    }
+
+    public Set<Course> getCourses(String id) {
+        Department department = getDepartmentById(id);
+        System.out.println(department.getCourses());
+        return department.getCourses();
     }
 }

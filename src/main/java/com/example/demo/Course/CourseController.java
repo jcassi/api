@@ -1,14 +1,19 @@
 package com.example.demo.Course;
 
+import com.example.demo.Department.Department;
 import com.example.demo.Student.Student;
 import com.example.demo.Student.StudentNotFoundException;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
+import org.springframework.util.ReflectionUtils;
 import org.springframework.web.bind.annotation.*;
 import org.springframework.web.server.ResponseStatusException;
 
+import javax.transaction.Transactional;
+import java.lang.reflect.Field;
 import java.util.List;
+import java.util.Map;
 import java.util.Set;
 
 @RestController
@@ -44,6 +49,7 @@ public class CourseController {
         }
     }
 
+    @Transactional
     @PutMapping("/{id}")
     public ResponseEntity<Course> updateCourse(@PathVariable String id,
                                                @RequestBody Course course) {
@@ -68,4 +74,26 @@ public class CourseController {
         }
     }
 
+    @GetMapping("{id}/students")
+    public Set<Student> getStudents(@PathVariable String id){
+        try {
+            return courseService.getStudents(id);
+        } catch (CourseNotFoundException e) {
+            throw new ResponseStatusException(HttpStatus.NOT_FOUND, "Student not found", e);
+        }
+    }
+
+
+    @PatchMapping("/{id}")
+    public void updateCourse(@PathVariable String id, @RequestBody Map<Object, Object> fields) {
+        Course course = getCourseId(id);
+        // Map key is field name, v is value
+        fields.forEach((k, v) -> {
+            // use reflection to get field k on manager and set it to value v
+            Field field = ReflectionUtils.findField(Course.class, (String) k);
+            field.setAccessible(true);
+            ReflectionUtils.setField(field, course, v);
+        });
+        courseService.updateCourse(id, course);
+    }
 }

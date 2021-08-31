@@ -15,13 +15,15 @@ public class Course {
     private String name;
     private int maxEnrollment;
 
+    @JsonIgnore
     @ManyToMany(cascade = CascadeType.PERSIST, fetch = FetchType.LAZY)
     @JoinTable(name="course_student",
         joinColumns = @JoinColumn(name = "course_id"),
         inverseJoinColumns = @JoinColumn(name = "student_id"))
     private Set<Student> students;
 
-    @ManyToOne
+    @JsonIgnore
+    @ManyToOne(cascade = CascadeType.ALL)
     private Department department;
 
     public Course() {
@@ -66,10 +68,23 @@ public class Course {
         this.students = students;
     }
 
+    public Department getDepartment() {return department;}
+
+    public void setDepartment(Department department) {this.department = department;}
+
     public void addStudent(Student student) {
         if (this.students.size() >= this.maxEnrollment) {
             throw new CourseAlreadyFullException ();
         }
         this.students.add(student);
+    }
+
+    @Override
+    public String toString() {
+        return "Course{" +
+                "id='" + id + '\'' +
+                ", name='" + name + '\'' +
+                ", maxEnrollment=" + maxEnrollment +
+                '}';
     }
 }

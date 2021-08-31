@@ -1,5 +1,6 @@
 package com.example.demo.Student;
 
+import com.example.demo.Course.Course;
 import com.example.demo.Student.Student;
 import com.example.demo.Student.StudentAlreadyExistsException;
 import com.example.demo.Student.StudentNotFoundException;
@@ -7,10 +8,13 @@ import com.example.demo.Student.StudentService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
+import org.springframework.util.ReflectionUtils;
 import org.springframework.web.bind.annotation.*;
 import org.springframework.web.server.ResponseStatusException;
 
+import java.lang.reflect.Field;
 import java.util.List;
+import java.util.Map;
 import java.util.Set;
 
 @RestController
@@ -47,4 +51,26 @@ public class StudentController {
         studentService.deleteStudent(id);
     }
 
+    @GetMapping("{id}/courses")
+    public Set<Course> getCourses(@PathVariable Long id){
+        try {
+            return studentService.getCourses(id);
+        } catch (StudentNotFoundException e) {
+            throw new ResponseStatusException(HttpStatus.NOT_FOUND, "Student not found", e);
+        }
+    }
+
+    /*
+    @PatchMapping("/{id}")
+    public void updateDepartment(@PathVariable Long id, @RequestBody Map<Object, Object> fields) {
+        Student student = getStudentById(id);
+        // Map key is field name, v is value
+        fields.forEach((k, v) -> {
+            // use reflection to get field k on manager and set it to value v
+            Field field = ReflectionUtils.findField(Student.class, (String) k);
+            field.setAccessible(true);
+            ReflectionUtils.setField(field, student, v);
+        });
+        //studentService.updateStudent(id, student); falta update student en studentservice
+    }*/
 }

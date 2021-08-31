@@ -69,4 +69,8 @@ public class CourseService {
         }
     }
 
+    public Set<Student> getStudents(String id) {
+        Course course = getCourseById(id);
+        return course.getStudents();
+    }
 }

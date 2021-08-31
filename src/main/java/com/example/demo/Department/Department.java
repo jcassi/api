@@ -1,11 +1,9 @@
 package com.example.demo.Department;
 
 import com.example.demo.Course.Course;
+import com.fasterxml.jackson.annotation.JsonIgnore;
 
-import javax.persistence.Entity;
-import javax.persistence.Id;
-import javax.persistence.OneToMany;
-import javax.persistence.Table;
+import javax.persistence.*;
 import java.util.Set;
 
 @Entity
@@ -17,11 +15,13 @@ public class Department {
 
     String name;
 
-    @OneToMany(mappedBy = "department")
+    @JsonIgnore
+    @OneToMany(mappedBy = "department", fetch = FetchType.EAGER, cascade = CascadeType.ALL)
     Set<Course> courses;
 
     public void addCourse(Course course) {
         courses.add(course);
+        course.setDepartment(this);
     }
 
     public Department() {
@@ -47,4 +47,8 @@ public class Department {
     public void setName(String name) {
         this.name = name;
     }
+
+    public Set<Course> getCourses() {return this.courses;}
+
+    public void setCourses(Course course) {this.courses = courses;}
 }

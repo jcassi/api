@@ -1,5 +1,6 @@
 package com.example.demo.Student;
 
+import com.example.demo.Course.Course;
 import com.example.demo.Student.Student;
 import com.example.demo.Student.StudentAlreadyExistsException;
 import com.example.demo.Student.StudentNotFoundException;
@@ -42,5 +43,10 @@ public class StudentService {
 
     public void deleteStudent(Long id) {
         studentRepository.deleteById(id);
+    }
+
+    public Set<Course> getCourses(Long id) {
+        Student student = getStudentById(id);
+        return student.getCourses();
     }
 }
