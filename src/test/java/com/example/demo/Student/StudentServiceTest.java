@@ -6,11 +6,14 @@ import org.mockito.*;
 import org.mockito.junit.jupiter.MockitoExtension;
 import java.util.Arrays;
 import java.util.HashSet;
+import java.util.Optional;
 
 import static org.junit.jupiter.api.Assertions.assertEquals;
+import static org.junit.jupiter.api.Assertions.assertThrows;
+import static org.mockito.Mockito.*;
 
 @ExtendWith(MockitoExtension.class)
-public class StudentTest {
+public class StudentServiceTest {
 
     @Mock
     StudentRepository studentRepository;
@@ -28,17 +31,17 @@ public class StudentTest {
         Student savedStudent = new Student();
         savedStudent.setId(1L);
 
-        Mockito.when(studentRepository.save(student)).thenReturn(savedStudent);
+        when(studentRepository.save(student)).thenReturn(savedStudent);
 
         assertEquals(savedStudent, studentService.addStudent(student));
 
-        Mockito.verify(studentRepository, Mockito.times(1)).save(student);
+        verify(studentRepository, times(1)).save(student);
     }
 
     @Test
     public void getStudentsNoStudentTest() {
         Student[] students = new Student[] {};
-        Mockito.when(studentRepository.findAll()).thenReturn(new HashSet<Student>());
+        when(studentRepository.findAll()).thenReturn(new HashSet<Student>());
         assertEquals(new HashSet<Student>(), studentService.getAllStudents());
     }
 
@@ -53,17 +56,15 @@ public class StudentTest {
         studentService.addStudent(student1);
         studentService.addStudent(student2);
 
-        Mockito.when(studentRepository.findAll()).thenReturn(Arrays.asList(student1, student2));
+        when(studentRepository.findAll()).thenReturn(Arrays.asList(student1, student2));
 
         assertEquals(new HashSet<Student> (Arrays.asList(student1, student2)), studentService.getAllStudents());
 
-        Mockito.verify(studentRepository, Mockito.times(2)).save(studentArgumentCaptor.capture());
+        verify(studentRepository, times(2)).save(studentArgumentCaptor.capture());
     }
 
     @Test
     public void deleteStudentTest() {
-        Student student = new Student();
-
         Student student1 = new Student();
         Student student2 = new Student();
 
@@ -75,11 +76,22 @@ public class StudentTest {
 
         studentService.deleteStudent(student1.getId());
 
-        Mockito.when(studentRepository.findAll()).thenReturn(Arrays.asList(student2));
+        when(studentRepository.findAll()).thenReturn(Arrays.asList(student2));
 
         assertEquals(new HashSet<Student> (Arrays.asList(student2)), studentService.getAllStudents());
 
-        Mockito.verify(studentRepository, Mockito.times(2)).save(studentArgumentCaptor.capture());
-        Mockito.verify(studentRepository, Mockito.times(1)).deleteById(1L);
+        verify(studentRepository, times(2)).save(studentArgumentCaptor.capture());
+        verify(studentRepository, times(1)).deleteById(1L);
+    }
+
+
+
+    @Test
+    public void deleteStudentInvalidIdTest() {
+        Student student = new Student();
+        student.setId(1L);
+        studentService.addStudent(student);
+        when(studentRepository.findById(2L)).thenReturn(Optional.empty());
+        assertThrows(StudentNotFoundException.class, () -> {studentService.getStudentById(2L);});
     }
 }

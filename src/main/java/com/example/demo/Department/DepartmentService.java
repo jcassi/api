@@ -43,11 +43,11 @@ public class DepartmentService {
         }
     }
 
-    public void addDepartment(Department department) {
+    public Department addDepartment(Department department) {
         if (departmentRepository.existsById(department.getId())) {
             throw new DepartmentAlreadyExistsException();
         } else {
-            departmentRepository.save(department);
+            return departmentRepository.save(department);
         }
     }
 
