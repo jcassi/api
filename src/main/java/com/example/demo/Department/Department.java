@@ -4,6 +4,8 @@ import com.example.demo.Course.Course;
 import com.fasterxml.jackson.annotation.JsonIgnore;
 
 import javax.persistence.*;
+import java.util.HashSet;
+import java.util.Objects;
 import java.util.Set;
 
 @Entity
@@ -25,11 +27,13 @@ public class Department {
     }
 
     public Department() {
+
     }
 
     public Department(String id, String name) {
         this.id = id;
-        this.name = name;;
+        this.name = name;
+        courses = new HashSet<>();
     }
 
     public String getId() {
@@ -51,4 +55,12 @@ public class Department {
     public Set<Course> getCourses() {return this.courses;}
 
     public void setCourses(Course course) {this.courses = courses;}
+
+    @Override
+    public boolean equals(Object o) {
+        if (this == o) return true;
+        if (!(o instanceof Department)) return false;
+        Department that = (Department) o;
+        return Objects.equals(getId(), that.getId()) && Objects.equals(getName(), that.getName()) && Objects.equals(getCourses(), that.getCourses());
+    }
 }

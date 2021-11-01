@@ -65,11 +65,10 @@ public class DepartmentService {
 
     public void addCourseToDepartment(String departmentId, Course course) {
         try {
-            courseService.addCourse(course);
             Department department = this.getDepartmentById(departmentId);
+            courseService.addCourse(course);
             department.addCourse(course);
             updateDepartment(departmentId, department);
-            System.out.println(department.getCourses());
         } catch (RuntimeException e) {
             throw e;
         }
