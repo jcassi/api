@@ -1,5 +1,6 @@
 package com.example.demo.Student;
 
+import com.example.demo.Course.Course;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.extension.ExtendWith;
 import org.mockito.*;
@@ -26,7 +27,7 @@ public class StudentServiceTest {
 
 
     @Test
-    public void addStudentSingleStudentsTest() {
+    public void addStudentTest() {
         Student student = new Student();
         Student savedStudent = new Student();
         savedStudent.setId(1L);
@@ -46,10 +47,28 @@ public class StudentServiceTest {
     }
 
     @Test
-    public void getAllStudentsTwoStudentsTest() {
+    public void getStudentById() {
         Student student1 = new Student();
         Student student2 = new Student();
 
+        studentService.addStudent(student1);
+        studentService.addStudent(student2);
+
+        student1.setId(1L);
+        student2.setId(2L);
+
+        when(studentRepository.findById(2L)).thenReturn(Optional.of(student2));
+
+        assertEquals(student2, studentService.getStudentById(2L));
+
+        verify(studentRepository, times(1)).findById(2L);
+    }
+
+
+    @Test
+    public void getAllStudentsTwoStudentsTest() {
+        Student student1 = new Student();
+        Student student2 = new Student();
         student1.setId(1L);
         student2.setId(2L);
 
@@ -87,11 +106,24 @@ public class StudentServiceTest {
 
 
     @Test
-    public void deleteStudentInvalidIdTest() {
+    public void getStudentInvalidIdTest() {
         Student student = new Student();
         student.setId(1L);
         studentService.addStudent(student);
         when(studentRepository.findById(2L)).thenReturn(Optional.empty());
         assertThrows(StudentNotFoundException.class, () -> {studentService.getStudentById(2L);});
+    }
+
+    @Test
+    public void getCoursesTest() {
+        Student student = new Student();
+        student.setId(1L);
+        Course course1 = new Course();
+        Course course2 = new Course();
+        student.setCourses(new HashSet<>(Arrays.asList(course1, course2)));
+
+        when(studentRepository.findById(1L)).thenReturn(Optional.of(student));
+
+        assertEquals(new HashSet<>(Arrays.asList(course1, course2)), studentService.getCourses(1L));
     }
 }
