@@ -5,6 +5,7 @@ import com.example.demo.Student.Student;
 import com.fasterxml.jackson.annotation.*;
 
 import javax.persistence.*;
+import java.util.Objects;
 import java.util.Set;
 
 @Entity
@@ -87,4 +88,13 @@ public class Course {
                 ", maxEnrollment=" + maxEnrollment +
                 '}';
     }
+
+    @Override
+    public boolean equals(Object o) {
+        if (this == o) return true;
+        if (!(o instanceof Course)) return false;
+        Course course = (Course) o;
+        return getMaxEnrollment() == course.getMaxEnrollment() && Objects.equals(getId(), course.getId()) && Objects.equals(getName(), course.getName()) && Objects.equals(getStudents(), course.getStudents()) && Objects.equals(getDepartment(), course.getDepartment());
+    }
+
 }
