@@ -1,6 +1,7 @@
 package com.example.demo.Student;
 
 import com.example.demo.Course.Course;
+import com.example.demo.Course.CourseNotFoundException;
 import com.fasterxml.jackson.annotation.*;
 
 import javax.persistence.*;
@@ -82,6 +83,14 @@ public class Student {
 
     public void setCourses(Set<Course> courses) {
         this.courses = courses;
+    }
+
+    public void deleteCourse(Course course) {
+        if (courses.contains(course)) {
+            courses.remove(course);
+        } else {
+            throw new CourseNotFoundException();
+        }
     }
 
     @Override

@@ -1,6 +1,7 @@
 package com.example.demo.Course;
 
 import com.example.demo.Department.Department;
+import com.example.demo.Department.DepartmentNotFoundException;
 import com.example.demo.Student.Student;
 import com.example.demo.Student.StudentNotFoundException;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -79,7 +80,7 @@ public class CourseController {
         try {
             return courseService.getStudents(id);
         } catch (CourseNotFoundException e) {
-            throw new ResponseStatusException(HttpStatus.NOT_FOUND, "Student not found", e);
+            throw new ResponseStatusException(HttpStatus.NOT_FOUND, "Course not found", e);
         }
     }
 
@@ -95,5 +96,16 @@ public class CourseController {
             ReflectionUtils.setField(field, course, v);
         });
         courseService.updateCourse(id, course);
+    }
+
+    @DeleteMapping("/{courseId}/students/{studentId}")
+    public void deleteStudentFromCourse(@PathVariable String courseId, @PathVariable Long studentId) {
+        try {
+            courseService.deleteStudentFromCourse(courseId, studentId);
+        } catch (CourseNotFoundException e) {
+            throw new ResponseStatusException(HttpStatus.NOT_FOUND, "Course not found", e);
+        } catch (StudentNotFoundException e) {
+            throw new ResponseStatusException(HttpStatus.NOT_FOUND, "Student not found", e);
+        }
     }
 }

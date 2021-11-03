@@ -2,6 +2,7 @@ package com.example.demo.Course;
 
 import com.example.demo.Department.Department;
 import com.example.demo.Student.Student;
+import com.example.demo.Student.StudentNotFoundException;
 import com.fasterxml.jackson.annotation.*;
 
 import javax.persistence.*;
@@ -17,14 +18,14 @@ public class Course {
     private int maxEnrollment;
 
     @JsonIgnore
-    @ManyToMany(cascade = CascadeType.PERSIST, fetch = FetchType.LAZY)
+    @ManyToMany(fetch = FetchType.LAZY)
     @JoinTable(name="course_student",
         joinColumns = @JoinColumn(name = "course_id"),
         inverseJoinColumns = @JoinColumn(name = "student_id"))
     private Set<Student> students;
 
     @JsonIgnore
-    @ManyToOne(cascade = CascadeType.ALL)
+    @ManyToOne()
     private Department department;
 
     public Course() {
@@ -97,4 +98,13 @@ public class Course {
         return getMaxEnrollment() == course.getMaxEnrollment() && Objects.equals(getId(), course.getId()) && Objects.equals(getName(), course.getName()) && Objects.equals(getStudents(), course.getStudents()) && Objects.equals(getDepartment(), course.getDepartment());
     }
 
+    public void deleteStudent(Student student) {
+        if (students.contains(student)) {
+            System.out.println("OUT");
+            students.remove(student);
+        } else {
+            System.out.println("no tiene");
+            throw new StudentNotFoundException();
+        }
+    }
 }

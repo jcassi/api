@@ -1,6 +1,7 @@
 package com.example.demo.Department;
 
 import com.example.demo.Course.Course;
+import com.example.demo.Course.CourseNotFoundException;
 import com.fasterxml.jackson.annotation.JsonIgnore;
 
 import javax.persistence.*;
@@ -62,5 +63,13 @@ public class Department {
         if (!(o instanceof Department)) return false;
         Department that = (Department) o;
         return Objects.equals(getId(), that.getId()) && Objects.equals(getName(), that.getName()) && Objects.equals(getCourses(), that.getCourses());
+    }
+
+    public void deleteCourse(Course course) {
+        if (courses.contains(course)) {
+            courses.remove(course);
+        } else {
+            throw new CourseNotFoundException();
+        }
     }
 }

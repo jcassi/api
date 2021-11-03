@@ -1,5 +1,6 @@
 package com.example.demo.Course;
 
+import com.example.demo.Department.Department;
 import com.example.demo.Student.Student;
 import com.example.demo.Student.StudentRepository;
 import com.example.demo.Student.StudentService;
@@ -72,5 +73,16 @@ public class CourseService {
     public Set<Student> getStudents(String id) {
         Course course = getCourseById(id);
         return course.getStudents();
+    }
+
+    public void deleteStudentFromCourse(String courseId, Long studentId) {
+        try {
+            Course course = this.getCourseById(courseId);
+            Student student = this.studentService.getStudentById(studentId);
+            course.deleteStudent(student);
+            updateCourse(courseId, course);
+        } catch (RuntimeException e) {
+            throw e;
+        }
     }
 }

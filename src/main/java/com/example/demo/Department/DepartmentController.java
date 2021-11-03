@@ -93,4 +93,15 @@ public class DepartmentController {
         });
         departmentService.updateDepartment(id, department);
     }
+
+    @DeleteMapping("/{departmentId}/courses/{courseId}")
+    public void deleteCourseFromDepartment(@PathVariable String departmentId, @PathVariable String courseId) {
+        try {
+            departmentService.deleteCourseFromDepartment(departmentId, courseId);
+        } catch (DepartmentNotFoundException e) {
+            throw new ResponseStatusException(HttpStatus.NOT_FOUND, "Department not found", e);
+        } catch (CourseNotFoundException e) {
+            throw new ResponseStatusException(HttpStatus.NOT_FOUND, "Course not found", e);
+        }
+    }
 }

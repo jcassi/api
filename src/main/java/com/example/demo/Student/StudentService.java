@@ -42,6 +42,9 @@ public class StudentService {
     }
 
     public void deleteStudent(Long id) {
+        for(Course course : getCourses(id)) {
+            course.deleteStudent(getStudentById(id));
+        }
         studentRepository.deleteById(id);
     }
 

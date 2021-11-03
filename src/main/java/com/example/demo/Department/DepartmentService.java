@@ -79,4 +79,15 @@ public class DepartmentService {
         System.out.println(department.getCourses());
         return department.getCourses();
     }
+
+    public void deleteCourseFromDepartment(String departmentId, String courseId) {
+        try {
+            Department department = this.getDepartmentById(departmentId);
+            Course course = this.courseService.getCourseById(courseId);
+            department.deleteCourse(course);
+            courseService.deleteCourse(courseId);
+        } catch (RuntimeException e) {
+            throw e;
+        }
+    }
 }
