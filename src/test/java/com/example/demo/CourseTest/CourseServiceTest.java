@@ -1,12 +1,10 @@
 package com.example.demo.CourseTest;
 
-import com.example.demo.Course.Course;
-import com.example.demo.Course.CourseNotFoundException;
-import com.example.demo.Course.CourseRepository;
-import com.example.demo.Course.CourseService;
+import com.example.demo.Course.*;
 import com.example.demo.Student.Student;
 import com.example.demo.Student.StudentNotFoundException;
 import com.example.demo.Student.StudentService;
+import org.checkerframework.checker.units.qual.C;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.extension.ExtendWith;
 import org.mockito.ArgumentCaptor;
@@ -155,7 +153,8 @@ public class CourseServiceTest {
         when(courseRepository.findById("8101")).thenReturn(Optional.of(course));
         when(studentService.getStudentById(3L)).thenThrow(StudentNotFoundException.class);
 
-        assertThrows(StudentNotFoundException.class, () -> {courseService.addStudentToCourse("8101", 3L);});
+        assertThrows(StudentNotFoundException.class,
+                () -> {courseService.addStudentToCourse("8101", 3L);});
     }
 
     @Test
@@ -169,6 +168,22 @@ public class CourseServiceTest {
 
         when(courseRepository.findById("8201")).thenThrow(CourseNotFoundException.class);
 
-        assertThrows(CourseNotFoundException.class, () -> {courseService.addStudentToCourse("8201", 3L);});
+        assertThrows(CourseNotFoundException.class,
+                () -> {courseService.addStudentToCourse("8201", 3L);});
+    }
+
+    @Test
+    public void addStudentToFullCourseThrowsException() {
+        Course course = new Course("8101", "Análisis Matemático II", 1);
+        Student student1 = new Student();
+        student1.setId(1L);
+        Student student2 = new Student();
+        student2.setId(2L);
+        course.addStudent(student1);
+
+        when(courseRepository.findById("8101")).thenReturn(Optional.of(course));
+        when(studentService.getStudentById(2L)).thenReturn(student2);
+        assertThrows(CourseAlreadyFullException.class,
+                () -> {courseService.addStudentToCourse("8101", 2L);});
     }
 }
