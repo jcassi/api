@@ -13,6 +13,7 @@ import org.springframework.web.bind.annotation.*;
 import org.springframework.web.server.ResponseStatusException;
 
 import java.lang.reflect.Field;
+import java.util.HashSet;
 import java.util.List;
 import java.util.Map;
 import java.util.Set;
@@ -24,25 +25,35 @@ public class StudentController {
     @Autowired
     private StudentService studentService;
 
+    @Autowired
+    StudentMapper studentMapper;
+
     @GetMapping
-    public Set<Student> getStudents() {
-        return studentService.getAllStudents();
+    public Set<StudentDto> getStudents() {
+        Set<Student> students = studentService.getAllStudents();
+        Set<StudentDto> studentDtos = new HashSet<>();
+        for (Student student : students) {
+            studentDtos.add(studentMapper.studentToStudentDto(student));
+        }
+
+        return studentDtos;
     }
 
     @GetMapping(path = "/{id}")
-    public Student getStudentById(@PathVariable Long id) {
+    public StudentDto getStudentById(@PathVariable Long id) {
         Student student;
         try {
             student = studentService.getStudentById(id);
         } catch (StudentNotFoundException e) {
             throw new ResponseStatusException(HttpStatus.NOT_FOUND, "Student not found", e);
         }
-        return student;
+        return studentMapper.studentToStudentDto(student);
     }
 
 
     @PostMapping
-    public Student addStudent(@RequestBody Student student) {
+    public Student addStudent(@RequestBody StudentDto studentDto) {
+        Student student = studentMapper.studentDtoToStudent(studentDto);
         return studentService.addStudent(student);
     }
 
