@@ -56,7 +56,15 @@ public class CourseService {
     }
 
     public void deleteCourse(String id) {
-        courseRepository.deleteById(id);
+        try {
+            Course course = getCourseById(id);
+            Department department = course.getDepartment();
+            department.deleteCourse(course);
+            courseRepository.deleteById(id);
+        } catch (RuntimeException e) {
+            throw e;
+        }
+        //courseRepository.deleteById(id);
     }
 
     public void addStudentToCourse(String courseId, Long studentId) {

@@ -6,6 +6,7 @@ import com.example.demo.Student.StudentNotFoundException;
 import com.fasterxml.jackson.annotation.*;
 
 import javax.persistence.*;
+import java.util.HashSet;
 import java.util.Objects;
 import java.util.Set;
 
@@ -36,7 +37,10 @@ public class Course {
         this.id = id;
         this.name = name;
         this.maxEnrollment = maxEnrollment;
+        this.students = new HashSet<>();
     }
+
+
 
     public String getId() {
         return id;
@@ -100,10 +104,8 @@ public class Course {
 
     public void deleteStudent(Student student) {
         if (students.contains(student)) {
-            System.out.println("OUT");
             students.remove(student);
         } else {
-            System.out.println("no tiene");
             throw new StudentNotFoundException();
         }
     }
