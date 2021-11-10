@@ -104,10 +104,8 @@ public class Course {
 
     public void deleteStudent(Student student) {
         if (students.contains(student)) {
-            System.out.println("OUT");
             students.remove(student);
         } else {
-            System.out.println("no tiene");
             throw new StudentNotFoundException();
         }
     }

@@ -63,7 +63,7 @@ public class DepartmentController {
         departmentService.deleteDepartment(id);
     }
 
-    @PutMapping("/{departmentId}/courses")
+    @PostMapping("/{departmentId}/courses")
     public void addCourseToDepartment(@PathVariable String departmentId, @RequestBody Course course) {
         try {
             departmentService.addCourseToDepartment(departmentId, course);
