@@ -1,16 +1,9 @@
 package com.example.demo.Student;
 
 import com.fasterxml.jackson.annotation.JsonProperty;
-import lombok.AllArgsConstructor;
-import lombok.Getter;
-import lombok.Setter;
-
 import javax.validation.constraints.Email;
 import java.util.Objects;
 
-//@Getter
-//@Setter
-//@AllArgsConstructor
 public class StudentDto {
     @JsonProperty("id")
     private Long id;

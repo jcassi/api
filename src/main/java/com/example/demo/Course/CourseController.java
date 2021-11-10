@@ -1,7 +1,5 @@
 package com.example.demo.Course;
 
-import com.example.demo.Department.Department;
-import com.example.demo.Department.DepartmentNotFoundException;
 import com.example.demo.Student.Student;
 import com.example.demo.Student.StudentDto;
 import com.example.demo.Student.StudentMapper;

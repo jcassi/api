@@ -4,8 +4,6 @@ package com.example.demo.Department;
 import com.example.demo.Course.Course;
 import com.example.demo.Course.CourseNotFoundException;
 import com.example.demo.Course.CourseService;
-import com.example.demo.Department.DepartmentRepository;
-import com.example.demo.Student.Student;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
