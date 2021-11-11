@@ -52,4 +52,12 @@ public class StudentService {
         Student student = getStudentById(id);
         return student.getCourses();
     }
+
+    public ResponseEntity<Student> updateStudent(Long id, Student student) {
+        if (studentRepository.existsById(id)) {
+            return new ResponseEntity<>(studentRepository.save(student), HttpStatus.OK);
+        } else {
+            return new ResponseEntity<>(studentRepository.save(student), HttpStatus.CREATED);
+        }
+    }
 }

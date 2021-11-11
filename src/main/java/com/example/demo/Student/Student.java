@@ -24,7 +24,7 @@ public class Student {
 
     private String email;
 
-    @JsonBackReference
+    @JsonBackReference//remove?
     @ManyToMany(mappedBy = "students", fetch = FetchType.LAZY)
     private Set<Course> courses;
 

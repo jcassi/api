@@ -71,10 +71,10 @@ public class StudentController {
         }
     }
 
-    /*
+
     @PatchMapping("/{id}")
-    public void updateDepartment(@PathVariable Long id, @RequestBody Map<Object, Object> fields) {
-        Student student = getStudentById(id);
+    public void updateCourse(@PathVariable Long id, @RequestBody Map<Object, Object> fields) {
+        Student student = studentService.getStudentById(id);
         // Map key is field name, v is value
         fields.forEach((k, v) -> {
             // use reflection to get field k on manager and set it to value v
@@ -82,6 +82,6 @@ public class StudentController {
             field.setAccessible(true);
             ReflectionUtils.setField(field, student, v);
         });
-        //studentService.updateStudent(id, student); falta update student en studentservice
-    }*/
+        studentService.updateStudent(id, student);
+    }
 }
