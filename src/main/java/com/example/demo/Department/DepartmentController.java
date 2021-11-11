@@ -62,12 +62,6 @@ public class DepartmentController {
         }
     }
 
-    /*@PutMapping("/{id}")
-    public ResponseEntity<Department> updateDepartment(@PathVariable String id,
-                                               @RequestBody Department department) {
-        return departmentService.updateDepartment(id, department);
-    }*/
-
     @DeleteMapping("/{id}")
     public void deleteDepartment(@PathVariable String id){
         departmentService.deleteDepartment(id);
@@ -97,9 +91,9 @@ public class DepartmentController {
         }
     }
 
-   /* @PatchMapping("/{id}")
+   @PatchMapping("/{id}")
     public void updateDepartment(@PathVariable String id, @RequestBody Map<Object, Object> fields) {
-        Department department = getDepartmentId(id);
+        Department department = departmentService.getDepartmentById(id);
         // Map key is field name, v is value
         fields.forEach((k, v) -> {
             // use reflection to get field k on manager and set it to value v
@@ -108,7 +102,7 @@ public class DepartmentController {
             ReflectionUtils.setField(field, department, v);
         });
         departmentService.updateDepartment(id, department);
-    }*/
+    }
 
     @DeleteMapping("/{departmentId}/courses/{courseId}")
     public void deleteCourseFromDepartment(@PathVariable String departmentId, @PathVariable String courseId) {
