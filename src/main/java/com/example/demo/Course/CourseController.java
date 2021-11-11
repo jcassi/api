@@ -1,5 +1,7 @@
 package com.example.demo.Course;
 
+import com.example.demo.Department.DepartmentDto;
+import com.example.demo.Department.DepartmentMapper;
 import com.example.demo.Student.Student;
 import com.example.demo.Student.StudentDto;
 import com.example.demo.Student.StudentMapper;
@@ -31,6 +33,9 @@ public class CourseController {
     @Autowired
     private StudentMapper studentMapper;
 
+    @Autowired
+    private DepartmentMapper departmentMapper;
+
     @GetMapping
     public Set<CourseDto> getCourses() {
         Set<Course> courses = courseService.getAllCourses();
@@ -51,24 +56,6 @@ public class CourseController {
         }
         return courseMapper.courseToCourseDto(course);
     }
-
-
-    /*@PostMapping
-    public void addCourse(@RequestBody CourseDto courseDto,  @RequestParam String departmentId) {
-        Course course = courseMapper.courseDtoToCourse(courseDto);
-        try {
-            courseService.addCourse(course);
-        } catch (CourseAlreadyExistsException e) {
-            throw new ResponseStatusException(HttpStatus.CONFLICT, "Course already exists", e);
-        }
-    }*/
-
-    /*@Transactional
-    @PutMapping("/{id}")
-    public ResponseEntity<Course> updateCourse(@PathVariable String id,
-                                               @RequestBody Course course) {
-        return courseService.updateCourse(id, course);
-    }*/
 
     @DeleteMapping("/{id}")
     public void deleteCourse(@PathVariable String id){
@@ -103,9 +90,9 @@ public class CourseController {
     }
 
 
-    /*@PatchMapping("/{id}")
+    @PatchMapping("/{id}")
     public void updateCourse(@PathVariable String id, @RequestBody Map<Object, Object> fields) {
-        Course course = getCourseId(id);
+        Course course = courseService.getCourseById(id);
         // Map key is field name, v is value
         fields.forEach((k, v) -> {
             // use reflection to get field k on manager and set it to value v
@@ -114,7 +101,7 @@ public class CourseController {
             ReflectionUtils.setField(field, course, v);
         });
         courseService.updateCourse(id, course);
-    }*/
+    }
 
     @DeleteMapping("/{courseId}/students/{studentId}")
     public void deleteStudentFromCourse(@PathVariable String courseId, @PathVariable Long studentId) {
@@ -125,5 +112,17 @@ public class CourseController {
         } catch (StudentNotFoundException e) {
             throw new ResponseStatusException(HttpStatus.NOT_FOUND, "Student not found", e);
         }
+    }
+
+    @GetMapping("/{id}/departments")
+    public DepartmentDto getDepartment(@PathVariable String id) {
+        DepartmentDto departmentDto;
+        try {
+            Course course = courseService.getCourseById(id);
+            departmentDto = departmentMapper.departmentToDepartmentDto(course.getDepartment());
+        } catch (RuntimeException e) {
+            throw e;
+        }
+        return departmentDto;
     }
 }

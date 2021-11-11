@@ -18,14 +18,14 @@ public class Course {
     private String name;
     private int maxEnrollment;
 
-    @JsonIgnore
+    @JsonIgnore //remove?
     @ManyToMany(fetch = FetchType.LAZY)
     @JoinTable(name="course_student",
         joinColumns = @JoinColumn(name = "course_id"),
         inverseJoinColumns = @JoinColumn(name = "student_id"))
     private Set<Student> students;
 
-    @JsonIgnore
+    @JsonIgnore //remove?
     @ManyToOne()
     private Department department;
 
